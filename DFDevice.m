@@ -16,22 +16,24 @@
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-#import <Cocoa/Cocoa.h>
-#import <OpenCL/OpenCL.h>
+#import "DFDevice.h"
 
-@interface DoubleFinderAppDelegate : NSObject <NSApplicationDelegate,NSTableViewDataSource>
+@implementation DFDevice
+
+@synthesize name, type, doubles;
+
+- (id) initWithName:(NSString*)inName type:(cl_device_type)inType hasDoubles:(BOOL)inDoubles
 {
-    NSWindow* window;
-    IBOutlet NSTableView* tableView;
+    self = [super init];
 
-    NSAttributedString* noDoublesString;
-    NSAttributedString* cpuString;
-    NSAttributedString* doublesString;
-    NSAttributedString* mysteryDoublesString;
+    if (self)
+    {
+        self.name = inName;
+        self.type = inType;
+        self.doubles = inDoubles;
+    }
 
-    NSMutableArray* devices;
+    return self;
 }
-
-@property (assign) NSWindow* window;
 
 @end

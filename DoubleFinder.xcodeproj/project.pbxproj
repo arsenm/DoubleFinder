@@ -11,6 +11,7 @@
 		256AC3DA0F4B6AC300CF3369 /* DoubleFinderAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* DoubleFinderAppDelegate.m */; };
 		35E7412113E11CF400BB7672 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35E7411F13E11CF400BB7672 /* Localizable.strings */; };
 		35E7412413E11CFD00BB7672 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 35E7411F13E11CF400BB7672 /* Localizable.strings */; };
+		35F1246313E1524100943481 /* DFDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F1246213E1524100943481 /* DFDevice.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -31,6 +32,8 @@
 		35E7412013E11CF400BB7672 /* es */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		35E7412313E11CFD00BB7672 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
 		35E7412513E11DA400BB7672 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = es; path = es.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		35F1246113E1524100943481 /* DFDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DFDevice.h; sourceTree = "<group>"; };
+		35F1246213E1524100943481 /* DFDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DFDevice.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* DoubleFinder-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DoubleFinder-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* DoubleFinder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoubleFinder.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C904A6EE13E0DEBB005F8B51 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
@@ -54,6 +57,8 @@
 			children = (
 				256AC3D80F4B6AC300CF3369 /* DoubleFinderAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* DoubleFinderAppDelegate.m */,
+				35F1246113E1524100943481 /* DFDevice.h */,
+				35F1246213E1524100943481 /* DFDevice.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -193,6 +198,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* DoubleFinderAppDelegate.m in Sources */,
+				35F1246313E1524100943481 /* DFDevice.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

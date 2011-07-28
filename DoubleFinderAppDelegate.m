@@ -17,18 +17,11 @@
  */
 
 #import "DoubleFinderAppDelegate.h"
-#import <OpenCL/OpenCL.h>
+#import "DFDevice.h"
 
 @implementation DoubleFinderAppDelegate
 
 @synthesize window;
-
-static cl_device_id* _devices = NULL;
-static cl_bool* _deviceDoubles = NULL;
-static cl_device_type* _deviceTypes = NULL;
-static NSString** _deviceNames = NULL;
-static cl_uint _nDevices = 0;
-
 
 static NSString* deviceName(cl_device_id dev)
 {
@@ -42,7 +35,7 @@ static NSString* deviceName(cl_device_id dev)
         [NSException raise:@"Failed to get device extensions" format:@"err = %d", err];
     }
 
-    return [[NSString alloc] initWithUTF8String:name];
+    return [[[NSString alloc] initWithUTF8String:name] copy];
 }
 
 static cl_device_type deviceType(cl_device_id dev)
@@ -69,7 +62,6 @@ static cl_bool deviceHasDoubles(cl_device_id dev)
     // CL_DEVICE_DOUBLE_FP_CONFIG
     // I'm not sure what this does if there is no double extension
     // is it 0? Or what
-
 
     err = clGetDeviceInfo(dev, CL_DEVICE_EXTENSIONS, sizeof(exts), exts, &readSize);
     if (err != CL_SUCCESS)
@@ -143,74 +135,50 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
     return devs;
 }
 
+- (id)init
+{
+    self = [super init];
+
+    if (self)
+    {
+        noDoublesString = cpuString = doublesString = mysteryDoublesString = nil;
+
+        devices = [[NSMutableArray alloc] init];
+    }
+
+    return self;
+}
+
 - (void) applicationDidFinishLaunching:(NSNotification*) aNotification
 {
-    cl_uint i;
+    cl_uint i, nDevices;
 
-    _devices = getDeviceIds(&_nDevices);
+    cl_device_id* device_ids = getDeviceIds(&nDevices);
 
-    _deviceDoubles = calloc(_nDevices, sizeof(cl_bool));
-    if (!_deviceDoubles)
+    for (i = 0; i < nDevices; ++i)
     {
-        perror("Allocating deviceDoubles");
-        exit(EXIT_FAILURE);
-    }
+        DFDevice * device_obj = [[DFDevice alloc] initWithName:deviceName(device_ids[i])
+                                                          type:deviceType(device_ids[i])
+                                                    hasDoubles:deviceHasDoubles(device_ids[i])];
 
-    _deviceNames = calloc(_nDevices, sizeof(NSString*));
-    if (!_deviceNames)
-    {
-        perror("Allocating names");
-        exit(EXIT_FAILURE);
-    }
-
-    _deviceTypes = calloc(_nDevices, sizeof(cl_device_type));
-    if (!_deviceTypes)
-    {
-        perror("Allocating device type");
-        exit(EXIT_FAILURE);
-    }
-
-    for (i = 0; i < _nDevices; ++i)
-    {
-        _deviceDoubles[i] = deviceHasDoubles(_devices[i]);
-        _deviceNames[i] = deviceName(_devices[i]);
-        _deviceTypes[i] = deviceType(_devices[i]);
+        [devices addObject:device_obj];
     }
 
     [tableView reloadData];
 }
 
-- (void) applicationWillTerminate:(NSNotification*) aNotification
-{
-    printf("Will terminate\n");
-
-    free(_devices);
-    free(_deviceDoubles);
-    free(_deviceNames);
-    free(_deviceTypes);
-    _devices = NULL;
-    _deviceDoubles = NULL;
-    _deviceNames = NULL;
-    _deviceTypes = NULL;
-    _nDevices = 0;
-}
-
 - (NSInteger) numberOfRowsInTableView:(NSTableView*) aTableView
 {
-    return (NSInteger) _nDevices;
+    return [devices count];
 }
 
 - (id) tableView:(NSTableView*)aTableView objectValueForTableColumn:(NSTableColumn*) column row:(NSInteger)rowIndex
 {
-    static NSAttributedString * noDoublesString = nil;
-    static NSAttributedString * cpuString = nil;
-    static NSAttributedString * doublesString = nil;
-    static NSAttributedString * mysteryDoublesString = nil;
+    DFDevice * device;
 
     if(noDoublesString == nil)
     {
-        NSDictionary * redAttribute, * greenAttribute, * orangeAttribute;;
-
+        static NSDictionary* redAttribute, * greenAttribute, * orangeAttribute;
         redAttribute = [NSDictionary dictionaryWithObject:[NSColor redColor]
                                                    forKey:NSForegroundColorAttributeName];
         greenAttribute = [NSDictionary dictionaryWithObject:[NSColor greenColor]
@@ -224,22 +192,23 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
         mysteryDoublesString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"A MYSTERY device with a nonbroken OpenCL", @"Localizable", @"Device is of unknown type and has doubles") attributes:orangeAttribute];
     }
 
-
-    if (rowIndex >= _nDevices)
+    if (rowIndex >= [devices count])
         return nil;
+
+    device = [devices objectAtIndex:rowIndex];
 
     if ([[column identifier] isEqualToString:@"DeviceColumn"])
     {
-        return _deviceNames[rowIndex];
+        return device.name;
     }
     else if ([[column identifier] isEqualToString:@"DoubleColumn"])
     {
-        if (!_deviceDoubles[rowIndex])
+        if (!device.doubles)
         {
             return noDoublesString;
         }
 
-        switch (_deviceTypes[rowIndex])
+        switch (device.type)
         {
             case CL_DEVICE_TYPE_CPU:
                 return cpuString;
