@@ -164,6 +164,7 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
         [devices addObject:device_obj];
     }
 
+    free(device_ids);
     [tableView reloadData];
 }
 
