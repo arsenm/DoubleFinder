@@ -208,6 +208,29 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
 
 - (id) tableView:(NSTableView*)aTableView objectValueForTableColumn:(NSTableColumn*) column row:(NSInteger)rowIndex
 {
+    static NSAttributedString * noDoublesString = nil;
+    static NSAttributedString * cpuString = nil;
+    static NSAttributedString * doublesString = nil;
+    static NSAttributedString * mysteryDoublesString = nil;
+
+    if(noDoublesString == nil)
+    {
+        NSDictionary * redAttribute, * greenAttribute, * orangeAttribute;;
+
+        redAttribute = [NSDictionary dictionaryWithObject:[NSColor redColor]
+                                                   forKey:NSForegroundColorAttributeName];
+        greenAttribute = [NSDictionary dictionaryWithObject:[NSColor greenColor]
+                                                     forKey:NSForegroundColorAttributeName];
+        orangeAttribute = [NSDictionary dictionaryWithObject:[NSColor orangeColor]
+                                                      forKey:NSForegroundColorAttributeName];
+
+        noDoublesString = [[NSAttributedString alloc] initWithString:@"NO DOUBLES" attributes:redAttribute];
+        cpuString = [[NSAttributedString alloc] initWithString:@"Doubles, but a CPU so not interesting" attributes:orangeAttribute];
+        doublesString = [[NSAttributedString alloc] initWithString:@"A quality device with a nonbroken OpenCL" attributes:greenAttribute];
+        mysteryDoublesString = [[NSAttributedString alloc] initWithString:@"A MYSTERY device with a nonbroken OpenCL" attributes:orangeAttribute];
+    }
+
+
     if (rowIndex >= _nDevices)
         return nil;
 
@@ -219,26 +242,22 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
     {
         if (!_deviceDoubles[rowIndex])
         {
-            return @"NO DOUBLES";
+            return noDoublesString;
         }
 
-        if (_deviceTypes[rowIndex] == CL_DEVICE_TYPE_CPU)
+        switch (_deviceTypes[rowIndex])
         {
-            return @"Doubles, but a CPU so not interesting";
-        }
-        else if (_deviceTypes[rowIndex] == CL_DEVICE_TYPE_GPU)
-        {
-            return @"A quality device with a nonbroken OpenCL";
-        }
-        else
-        {
-            return @"A MYSTERY device with a nonbroken OpenCL";
+            case CL_DEVICE_TYPE_CPU:
+                return cpuString;
+            case CL_DEVICE_TYPE_ACCELERATOR:
+            case CL_DEVICE_TYPE_GPU:
+                return doublesString;
+            default:
+                return mysteryDoublesString;
         }
     }
-    else
-    {
-        [NSException raise:@"MYSTERY COLUMN" format:@"Mystery column: %@", [column identifier]];
-    }
+
+    return nil;
 }
 
 @end
