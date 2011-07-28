@@ -182,13 +182,7 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
 
 - (void)applicationWillTerminate:(NSNotification*) aNotification
 {
-    cl_uint i;
     printf("Will terminate\n");
-
-    for (i = 0; i < _nDevices; ++i)
-    {
-        [_deviceNames[i] release];
-    }
 
     free(_devices);
     free(_deviceDoubles);
