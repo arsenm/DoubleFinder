@@ -180,7 +180,7 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
     [tableView reloadData];
 }
 
-- (void)applicationWillTerminate:(NSNotification*) aNotification
+- (void) applicationWillTerminate:(NSNotification*) aNotification
 {
     printf("Will terminate\n");
 
@@ -218,10 +218,10 @@ static cl_device_id* getDeviceIds(cl_uint* nDevOut)
         orangeAttribute = [NSDictionary dictionaryWithObject:[NSColor orangeColor]
                                                       forKey:NSForegroundColorAttributeName];
 
-        noDoublesString = [[NSAttributedString alloc] initWithString:@"NO DOUBLES" attributes:redAttribute];
-        cpuString = [[NSAttributedString alloc] initWithString:@"Doubles, but a CPU so not interesting" attributes:orangeAttribute];
-        doublesString = [[NSAttributedString alloc] initWithString:@"A quality device with a nonbroken OpenCL" attributes:greenAttribute];
-        mysteryDoublesString = [[NSAttributedString alloc] initWithString:@"A MYSTERY device with a nonbroken OpenCL" attributes:orangeAttribute];
+        noDoublesString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"NO DOUBLES", @"Localizable", @"Device does not have doubles") attributes:redAttribute];
+        cpuString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"Doubles, but a CPU so not interesting", @"Localizable", @"Device is a CPU and has doubles") attributes:orangeAttribute];
+        doublesString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"A quality device with a nonbroken OpenCL", @"Localizable", @"Device is a GPU or Accelerator and has doubles") attributes:greenAttribute];
+        mysteryDoublesString = [[NSAttributedString alloc] initWithString:NSLocalizedStringFromTable(@"A MYSTERY device with a nonbroken OpenCL", @"Localizable", @"Device is of unknown type and has doubles") attributes:orangeAttribute];
     }
 
 

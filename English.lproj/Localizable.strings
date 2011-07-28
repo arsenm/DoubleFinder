@@ -1,0 +1,12 @@
+﻿/* Device is of unknown type and has doubles */
+"A MYSTERY device with a nonbroken OpenCL" = "A MYSTERY device with a nonbroken OpenCL";
+
+/* Device is a GPU or Accelerator and has doubles */
+"A quality device with a nonbroken OpenCL" = "A quality device with a nonbroken OpenCL";
+
+/* Device is a CPU and has doubles */
+"Doubles, but a CPU so not interesting" = "Doubles, but a CPU so not interesting";
+
+/* Device does not have doubles */
+"NO DOUBLES" = "NO DOUBLES";
+
