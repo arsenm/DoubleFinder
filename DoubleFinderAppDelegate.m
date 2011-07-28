@@ -42,7 +42,7 @@ static NSString* deviceName(cl_device_id dev)
         [NSException raise:@"Failed to get device extensions" format:@"err = %d", err];
     }
 
-    return [[NSString alloc] initWithCString:name];
+    return [[NSString alloc] initWithUTF8String:name];
 }
 
 static cl_device_type deviceType(cl_device_id dev)
