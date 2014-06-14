@@ -32,6 +32,6 @@
     NSMutableArray* devices;
 }
 
-@property (assign) NSWindow* window;
+@property (nonatomic) NSWindow* window;
 
 @end
