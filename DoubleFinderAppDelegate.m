@@ -58,8 +58,8 @@ static cl_bool deviceHasDoubles(cl_device_id dev)
     size_t readSize;
     cl_int err;
     char* khr_fp64;
+    long long double_fp_config;
 
-    // CL_DEVICE_DOUBLE_FP_CONFIG
     // I'm not sure what this does if there is no double extension
     // is it 0? Or what
 
@@ -76,7 +76,9 @@ static cl_bool deviceHasDoubles(cl_device_id dev)
 
     khr_fp64 = strnstr(exts, "cl_khr_fp64", sizeof(exts));
 
-    return (khr_fp64 != NULL);
+    err = clGetDeviceInfo(dev, CL_DEVICE_DOUBLE_FP_CONFIG, sizeof(double_fp_config), &double_fp_config, NULL);
+
+    return (khr_fp64 != NULL) || (double_fp_config != 0);
 }
 
 static cl_device_id* getDeviceIds(cl_uint* nDevOut)
